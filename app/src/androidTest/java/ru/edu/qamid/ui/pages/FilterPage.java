@@ -58,6 +58,14 @@ public class FilterPage {
         onView(withId(R.id.filter_news_cancel_button)).perform(click());
     }
 
+    public void clickActiveCheckBox() {
+        onView(withId(R.id.filter_news_active_check_box)).perform(click());
+    }
+
+    public void clickInactiveCheckBox() {
+        onView(withId(R.id.filter_news_inactive_check_box)).perform(click());
+    }
+
     public void checkWrongPeriodDialogDisplayed() {
         onView(withText(R.string.wrong_news_date_period)).check(matches(isDisplayed()));
     }

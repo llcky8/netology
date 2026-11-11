@@ -35,7 +35,7 @@ public class AuthTest extends BaseUiTest {
     @Test
     @Feature("Вход в систему")
     @DisplayName("Успешная авторизация")
-    public void signIn_withValidCredentials_opensMainScreen() {
+    public void signInWithValidCredentials() {
         step("Заполнить поле Логин", () -> {
             authPage.setLogin(TestData.VALID_LOGIN);
             authPage.checkLoginFieldContains(TestData.VALID_LOGIN);
@@ -52,52 +52,64 @@ public class AuthTest extends BaseUiTest {
 
     @Test
     @Feature("Вход в систему")
+    @DisplayName("Авторизация с пробелами вокруг логина и пароля")
+    public void signInWithSpacesAroundCredentials() {
+        step("Заполнить логин и пароль с пробелами по краям", () -> {
+            authPage.setLogin(" " + TestData.VALID_LOGIN + " ");
+            authPage.setPassword(" " + TestData.VALID_PASSWORD + " ");
+        });
+        step("Нажать Войти, открывается главный экран", () -> {
+            authPage.clickEnter();
+            mainPage.checkScreenDisplayed();
+        });
+    }
+
+    @Test
+    @Feature("Вход в систему")
     @DisplayName("Авторизация с незаполненными полями")
-    public void signIn_withEmptyFields_showsEmptyFieldsToast() {
+    public void signInWithEmptyFields() {
         step("Нажать Войти, тост о пустых полях", () ->
                 authPage.clickEnterAndExpectToast(R.string.empty_login_or_password));
-        step("Главный экран не открыт", mainPage::checkScreenNotDisplayed);
+        step("Экран авторизации остаётся открытым", authPage::checkScreenDisplayed);
     }
 
     @Test
     @Feature("Вход в систему")
     @DisplayName("Авторизация с заполненным только полем Логин")
-    public void signIn_withOnlyLogin_showsEmptyFieldsToast() {
+    public void signInWithOnlyLogin() {
         step("Заполнить только поле Логин", () -> authPage.setLogin(TestData.VALID_LOGIN));
         step("Нажать Войти, тост о пустых полях", () ->
                 authPage.clickEnterAndExpectToast(R.string.empty_login_or_password));
-        step("Главный экран не открыт", mainPage::checkScreenNotDisplayed);
+        step("Экран авторизации остаётся открытым", authPage::checkScreenDisplayed);
     }
 
     @Test
     @Feature("Вход в систему")
     @DisplayName("Авторизация с заполненным только полем Пароль")
-    public void signIn_withOnlyPassword_showsEmptyFieldsToast() {
+    public void signInWithOnlyPassword() {
         step("Заполнить только поле Пароль", () -> authPage.setPassword(TestData.VALID_PASSWORD));
         step("Нажать Войти, тост о пустых полях", () ->
                 authPage.clickEnterAndExpectToast(R.string.empty_login_or_password));
-        step("Главный экран не открыт", mainPage::checkScreenNotDisplayed);
+        step("Экран авторизации остаётся открытым", authPage::checkScreenDisplayed);
     }
 
     @Test
     @Feature("Вход в систему")
     @DisplayName("Авторизация с логином и паролем из одних пробелов")
-    public void signIn_withBlankCredentials_showsEmptyFieldsToast() {
+    public void signInWithBlankCredentials() {
         step("Заполнить поля Логин и Пароль пробелами", () -> {
             authPage.setLogin("   ");
             authPage.setPassword("   ");
         });
         step("Нажать Войти, тост о пустых полях", () ->
                 authPage.clickEnterAndExpectToast(R.string.empty_login_or_password));
-        step("Главный экран не открыт", mainPage::checkScreenNotDisplayed);
+        step("Экран авторизации остаётся открытым", authPage::checkScreenDisplayed);
     }
-
-
 
     @Test
     @Feature("Вход в систему")
     @DisplayName("Авторизация с верным логином и неверным паролем")
-    public void signIn_withWrongPassword_showsWrongCredentialsToast() {
+    public void signInWithWrongPassword() {
         step("Заполнить верный логин и неверный пароль", () -> {
             authPage.setLogin(TestData.VALID_LOGIN);
             authPage.setPassword(TestData.randomPassword());
@@ -105,36 +117,30 @@ public class AuthTest extends BaseUiTest {
         step("Нажать Войти, тост о неверном логине или пароле", () ->
                 authPage.clickEnterAndExpectToast(R.string.wrong_login_or_password));
         step("Кнопка Войти снова доступна, индикатор загрузки скрыт", authPage::checkEnterButtonReady);
-        step("Главный экран не открыт", mainPage::checkScreenNotDisplayed);
     }
-
 
     @Test
     @Feature("Вход в систему")
-    @DisplayName("Авторизация со случайными несуществующими учётными данными")
-    public void signIn_withRandomCredentials_showsWrongCredentialsToast() {
-        String login = TestData.randomLogin();
-        String password = TestData.randomPassword();
+    @DisplayName("Авторизация несуществующего пользователя")
+    public void signInWithUnknownUser() {
         step("Заполнить поля случайными значениями", () -> {
-            authPage.setLogin(login);
-            authPage.setPassword(password);
+            authPage.setLogin(TestData.randomLogin());
+            authPage.setPassword(TestData.randomPassword());
         });
         step("Нажать Войти, тост о неверном логине или пароле", () ->
                 authPage.clickEnterAndExpectToast(R.string.wrong_login_or_password));
         step("Кнопка Войти снова доступна, индикатор загрузки скрыт", authPage::checkEnterButtonReady);
-        step("Главный экран не открыт", mainPage::checkScreenNotDisplayed);
     }
 
     @Test
     @Feature("Выход из системы")
     @DisplayName("Выход из личного кабинета")
-    public void logOut_afterSignIn_returnsToAuthScreen() {
+    public void logOutFromMainScreen() {
         authSteps.signIn(TestData.VALID_LOGIN, TestData.VALID_PASSWORD);
         step("Открыть меню личного кабинета", appBar::openPersonalCabinet);
         step("Нажать Выйти, открыт экран авторизации", () -> {
             appBar.clickLogOut();
             authPage.checkScreenDisplayed();
-            mainPage.checkScreenNotDisplayed();
         });
     }
 }

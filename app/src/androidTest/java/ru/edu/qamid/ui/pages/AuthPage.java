@@ -12,6 +12,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
+import androidx.annotation.StringRes;
 import androidx.test.espresso.matcher.ViewMatchers.Visibility;
 
 import ru.edu.qamid.R;
@@ -46,7 +47,7 @@ public class AuthPage {
         onView(withId(R.id.enter_button)).perform(click());
     }
 
-    public void clickEnterAndExpectToast(int toastTextRes) {
+    public void clickEnterAndExpectToast(@StringRes int toastTextRes) {
         ToastChecker.performAndExpectToast(this::clickEnter, toastTextRes);
     }
 

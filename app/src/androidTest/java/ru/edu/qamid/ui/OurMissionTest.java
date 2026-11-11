@@ -41,7 +41,7 @@ public class OurMissionTest extends BaseUiTest {
     @Test
     @Feature("Карточки миссии")
     @DisplayName("Раскрытие и сворачивание карточки миссии")
-    public void missionCard_click_togglesDescription() {
+    public void missionCardClickTogglesDescription() {
         step("Описание карточки изначально скрыто", () ->
                 ourMissionPage.checkDescriptionCollapsed(CARD_TITLE));
         step("Нажать на карточку, описание раскрыто", () -> {

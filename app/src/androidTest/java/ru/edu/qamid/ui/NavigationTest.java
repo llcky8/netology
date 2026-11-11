@@ -39,7 +39,7 @@ public class NavigationTest extends BaseUiTest {
     @Test
     @Feature("Меню приложения")
     @DisplayName("Пункт меню текущего экрана недоступен")
-    public void menuItem_ofCurrentScreen_isDisabled() {
+    public void currentScreenMenuItemIsDisabled() {
         step("Главный экран: Главная недоступна, Новости доступны", () -> {
             appBar.openMainMenu();
             appBar.checkMenuItemDisabled(R.string.main);
@@ -63,7 +63,7 @@ public class NavigationTest extends BaseUiTest {
     @Test
     @Feature("Главный экран")
     @DisplayName("Переход ко всем новостям с главного экрана")
-    public void allNews_onMainScreen_opensNewsList() {
+    public void allNewsOpensNewsList() {
         step("Нажать Все новости", () -> {
             mainPage.clickAllNews();
             newsListPage.checkScreenDisplayed();
@@ -73,7 +73,7 @@ public class NavigationTest extends BaseUiTest {
     @Test
     @Feature("Наша миссия")
     @DisplayName("Переход на экран Наша миссия из верхней панели")
-    public void ourMissionButton_opensOurMissionScreen() {
+    public void ourMissionButtonOpensOurMission() {
         step("Нажать кнопку Наша миссия", () -> {
             appBar.openOurMission();
             ourMissionPage.checkScreenDisplayed();
@@ -90,7 +90,7 @@ public class NavigationTest extends BaseUiTest {
     @Test
     @Feature("Выход из системы")
     @DisplayName("Выход из системы с экрана Новостей")
-    public void logOut_fromNewsList_returnsToAuthScreen() {
+    public void logOutFromNewsList() {
         step("Перейти в Новости", () -> {
             appBar.openMainMenu();
             appBar.clickMenuItem(R.string.news);

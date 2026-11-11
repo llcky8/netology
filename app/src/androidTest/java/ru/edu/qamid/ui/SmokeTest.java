@@ -21,7 +21,7 @@ public class SmokeTest extends BaseUiTest {
     @Test
     @Feature("Запуск приложения")
     @DisplayName("После splash открывается экран входа или главный экран")
-    public void appLaunches_andLeavesSplashScreen() {
+    public void appLeavesSplashScreen() {
         step("Splash-экран сменяется рабочим экраном приложения", authSteps::isLoggedInAfterSplash);
     }
 }

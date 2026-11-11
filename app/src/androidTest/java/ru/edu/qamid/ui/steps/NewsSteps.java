@@ -2,8 +2,6 @@ package ru.edu.qamid.ui.steps;
 
 import static ru.edu.qamid.ui.utils.AllureSteps.step;
 
-import java.util.List;
-
 import ru.edu.qamid.R;
 import ru.edu.qamid.ui.data.TestData;
 import ru.edu.qamid.ui.pages.AppBarPage;
@@ -43,7 +41,7 @@ public class NewsSteps {
         });
     }
 
-    public void createNews(String title, List<String> createdTitles) {
+    public void createNews(String title) {
         openCreateNewsForm();
         step("Заполнить все поля формы", () -> {
             createEditNewsPage.fillCategory(TestData.CATEGORY);
@@ -52,7 +50,6 @@ public class NewsSteps {
             createEditNewsPage.pickPublishTime(23, 59);
             createEditNewsPage.fillDescription(TestData.DESCRIPTION);
         });
-        createdTitles.add(title);
         step("Нажать кнопку Сохранить", () -> {
             createEditNewsPage.clickSave();
             controlPanelPage.checkScreenDisplayed();
