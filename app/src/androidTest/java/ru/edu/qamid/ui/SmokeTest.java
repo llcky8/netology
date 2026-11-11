@@ -7,6 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import io.qameta.allure.kotlin.Description;
 import io.qameta.allure.kotlin.Epic;
 import io.qameta.allure.kotlin.Feature;
 import io.qameta.allure.kotlin.junit4.DisplayName;
@@ -21,6 +22,7 @@ public class SmokeTest extends BaseUiTest {
     @Test
     @Feature("Запуск приложения")
     @DisplayName("После splash открывается экран входа или главный экран")
+    @Description("После запуска приложение уходит с экрана загрузки на экран входа или на главный экран")
     public void appLeavesSplashScreen() {
         step("Splash-экран сменяется рабочим экраном приложения", authSteps::isLoggedInAfterSplash);
     }

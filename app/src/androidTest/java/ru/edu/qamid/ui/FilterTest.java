@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import io.qameta.allure.kotlin.Description;
 import io.qameta.allure.kotlin.Epic;
 import io.qameta.allure.kotlin.Feature;
 import io.qameta.allure.kotlin.junit4.DisplayName;
@@ -50,6 +51,7 @@ public class FilterTest extends BaseUiTest {
     @Test
     @Feature("Фильтрация по периоду")
     @DisplayName("Фильтр с указанной только начальной датой")
+    @Description("Если указана только начальная дата, фильтр не применяется и показывается диалог Неверно указан период")
     public void filterWithOnlyStartDate() {
         newsSteps.openFilterFromNewsList();
         step("Выбрать только дату начала периода", () -> filterPage.pickStartDate(Calendar.getInstance()));
@@ -66,6 +68,7 @@ public class FilterTest extends BaseUiTest {
     @Test
     @Feature("Фильтрация по периоду")
     @DisplayName("Фильтр с указанной только конечной датой")
+    @Description("Если указана только конечная дата, фильтр не применяется и показывается диалог Неверно указан период")
     public void filterWithOnlyEndDate() {
         newsSteps.openFilterFromNewsList();
         step("Выбрать только дату окончания периода", () -> filterPage.pickEndDate(Calendar.getInstance()));
@@ -82,6 +85,7 @@ public class FilterTest extends BaseUiTest {
     @Test
     @Feature("Фильтр статуса")
     @DisplayName("Фильтр из списка новостей не содержит чекбоксов статуса")
+    @Description("В фильтре, открытом из списка новостей, нет чекбоксов Активна и Не активна")
     public void filterFromNewsListHidesStatusCheckBoxes() {
         newsSteps.openFilterFromNewsList();
         step("Чекбоксы Активна / Не активна скрыты", filterPage::checkStatusCheckBoxesHidden);
@@ -90,6 +94,7 @@ public class FilterTest extends BaseUiTest {
     @Test
     @Feature("Фильтр статуса")
     @DisplayName("Фильтр из панели управления содержит отмеченные чекбоксы статуса")
+    @Description("В фильтре, открытом из панели управления, чекбоксы Активна и Не активна видны и отмечены")
     public void filterFromControlPanelShowsStatusCheckBoxes() {
         newsSteps.openFilterFromControlPanel();
         step("Чекбоксы Активна / Не активна видимы и отмечены",
@@ -99,6 +104,7 @@ public class FilterTest extends BaseUiTest {
     @Test
     @Feature("Фильтр статуса")
     @DisplayName("Фильтр по статусу в панели управления")
+    @Description("Созданная активная новость пропадает из списка при фильтре Не активна и показывается при фильтре Активна")
     public void filterByStatusInControlPanel() {
         String title = TestData.randomNewsTitle();
         createdTitles.add(title);
@@ -126,6 +132,7 @@ public class FilterTest extends BaseUiTest {
     @Test
     @Feature("Фильтрация по периоду")
     @DisplayName("Кнопка Отмена закрывает фильтр без применения")
+    @Description("Кнопка Отмена возвращает к списку новостей")
     public void cancelFilterReturnsToNewsList() {
         newsSteps.openFilterFromNewsList();
         step("Нажать Отмена, открыт список новостей", () -> {

@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import io.qameta.allure.kotlin.Description;
 import io.qameta.allure.kotlin.Epic;
 import io.qameta.allure.kotlin.Feature;
 import io.qameta.allure.kotlin.junit4.DisplayName;
@@ -39,6 +40,7 @@ public class NavigationTest extends BaseUiTest {
     @Test
     @Feature("Меню приложения")
     @DisplayName("Пункт меню текущего экрана недоступен")
+    @Description("В главном меню нельзя выбрать пункт экрана, на котором сейчас находимся")
     public void currentScreenMenuItemIsDisabled() {
         step("Главный экран: Главная недоступна, Новости доступны", () -> {
             appBar.openMainMenu();
@@ -63,6 +65,7 @@ public class NavigationTest extends BaseUiTest {
     @Test
     @Feature("Главный экран")
     @DisplayName("Переход ко всем новостям с главного экрана")
+    @Description("Ссылка Все новости на главном экране открывает список новостей")
     public void allNewsOpensNewsList() {
         step("Нажать Все новости", () -> {
             mainPage.clickAllNews();
@@ -73,6 +76,7 @@ public class NavigationTest extends BaseUiTest {
     @Test
     @Feature("Наша миссия")
     @DisplayName("Переход на экран Наша миссия из верхней панели")
+    @Description("Кнопка в верхней панели открывает экран Наша миссия, из него можно перейти в Новости")
     public void ourMissionButtonOpensOurMission() {
         step("Нажать кнопку Наша миссия", () -> {
             appBar.openOurMission();
@@ -90,6 +94,7 @@ public class NavigationTest extends BaseUiTest {
     @Test
     @Feature("Выход из системы")
     @DisplayName("Выход из системы с экрана Новостей")
+    @Description("Выход из системы работает с экрана новостей")
     public void logOutFromNewsList() {
         step("Перейти в Новости", () -> {
             appBar.openMainMenu();

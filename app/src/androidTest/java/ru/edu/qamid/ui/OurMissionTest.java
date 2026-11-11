@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import io.qameta.allure.kotlin.Description;
 import io.qameta.allure.kotlin.Epic;
 import io.qameta.allure.kotlin.Feature;
 import io.qameta.allure.kotlin.junit4.DisplayName;
@@ -41,6 +42,7 @@ public class OurMissionTest extends BaseUiTest {
     @Test
     @Feature("Карточки миссии")
     @DisplayName("Раскрытие и сворачивание карточки миссии")
+    @Description("Нажатие на карточку раскрывает описание, повторное нажатие скрывает")
     public void missionCardClickTogglesDescription() {
         step("Описание карточки изначально скрыто", () ->
                 ourMissionPage.checkDescriptionCollapsed(CARD_TITLE));

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import io.qameta.allure.kotlin.Description;
 import io.qameta.allure.kotlin.Epic;
 import io.qameta.allure.kotlin.Feature;
 import io.qameta.allure.kotlin.junit4.DisplayName;
@@ -56,6 +57,7 @@ public class NewsTest extends BaseUiTest {
     @Test
     @Feature("Создание новости")
     @DisplayName("Создание новости со всеми заполненными полями")
+    @Description("Новость со всеми заполненными полями сохраняется и видна в панели управления со статусом Активна")
     public void createNewsWithAllFieldsFilled() {
         String title = newTitle();
         newsSteps.createNews(title);
@@ -66,6 +68,7 @@ public class NewsTest extends BaseUiTest {
     @Test
     @Feature("Создание новости")
     @DisplayName("Форма создания: заголовок Создание и заблокированный переключатель активности")
+    @Description("При создании новости в шапке написано Создание, переключатель Активна включён и его нельзя изменить")
     public void createFormHasLockedActiveSwitch() {
         newsSteps.openCreateNewsForm();
         step("В верхней панели заголовок Создание", () ->
@@ -76,6 +79,7 @@ public class NewsTest extends BaseUiTest {
     @Test
     @Feature("Создание новости")
     @DisplayName("Выбор категории подставляет её в пустой заголовок")
+    @Description("Если заголовок пустой, после выбора категории в него подставляется название категории")
     public void selectCategoryFillsEmptyTitle() {
         newsSteps.openCreateNewsForm();
         step("Выбрать категорию из выпадающего списка", () ->
@@ -87,6 +91,7 @@ public class NewsTest extends BaseUiTest {
     @Test
     @Feature("Создание новости")
     @DisplayName("Сохранение новости с незаполненным описанием")
+    @Description("Без описания новость не сохраняется, показывается сообщение Заполните пустые поля")
     public void saveNewsWithEmptyDescription() {
         String title = newTitle();
         newsSteps.openCreateNewsForm();
@@ -104,6 +109,7 @@ public class NewsTest extends BaseUiTest {
     @Test
     @Feature("Создание новости")
     @DisplayName("Отмена создания новости с подтверждением")
+    @Description("После отмены создания и подтверждения в диалоге новость не появляется в списке")
     public void cancelCreationDoesNotSaveNews() {
         String title = newTitle();
         newsSteps.openCreateNewsForm();
@@ -123,6 +129,7 @@ public class NewsTest extends BaseUiTest {
     @Test
     @Feature("Создание новости")
     @DisplayName("Отказ от отмены создания сохраняет введённые данные")
+    @Description("Если в диалоге отмены нажать Отмена, форма остаётся открытой и заголовок не стирается")
     public void dismissCancelDialogKeepsEnteredData() {
         String title = newTitle();
         newsSteps.openCreateNewsForm();
@@ -141,6 +148,7 @@ public class NewsTest extends BaseUiTest {
     @Test
     @Feature("Удаление новости")
     @DisplayName("Удаление новости с подтверждением")
+    @Description("После подтверждения удаления новость пропадает из панели управления")
     public void deleteNewsRemovesItFromList() {
         String title = newTitle();
         newsSteps.createNews(title);
@@ -152,6 +160,7 @@ public class NewsTest extends BaseUiTest {
     @Test
     @Feature("Удаление новости")
     @DisplayName("Отмена удаления новости")
+    @Description("Если в диалоге удаления нажать Отмена, новость остаётся в списке")
     public void cancelDeletionKeepsNewsInList() {
         String title = newTitle();
         newsSteps.createNews(title);
@@ -162,6 +171,7 @@ public class NewsTest extends BaseUiTest {
     @Test
     @Feature("Редактирование новости")
     @DisplayName("Редактирование заголовка новости")
+    @Description("После изменения заголовка в списке виден новый заголовок, старого нет")
     public void editNewsTitle() {
         String title = newTitle();
         String editedTitle = newTitle();
@@ -187,6 +197,7 @@ public class NewsTest extends BaseUiTest {
     @Test
     @Feature("Редактирование новости")
     @DisplayName("Снятие публикации новости через редактирование")
+    @Description("После выключения переключателя Активна у новости статус Не активна")
     public void editNewsSwitchOffActive() {
         String title = newTitle();
         newsSteps.createNews(title);
@@ -208,6 +219,7 @@ public class NewsTest extends BaseUiTest {
     @Test
     @Feature("Даты публикации")
     @DisplayName("Дату публикации нельзя выбрать в прошлом")
+    @Description("В календаре даты публикации минимальная дата равна сегодняшней")
     public void publishDateCannotBeBeforeToday() {
         newsSteps.openCreateNewsForm();
         step("Открыть выбор даты, minDate календаря равен текущему моменту", () -> {
