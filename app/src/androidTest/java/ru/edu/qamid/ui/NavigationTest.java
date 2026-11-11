@@ -40,7 +40,7 @@ public class NavigationTest extends BaseUiTest {
     @Feature("Меню приложения")
     @DisplayName("Пункт меню текущего экрана недоступен")
     public void menuItem_ofCurrentScreen_isDisabled() {
-        step("Главный экран: «Главная» недоступна, «Новости» доступны", () -> {
+        step("Главный экран: Главная недоступна, Новости доступны", () -> {
             appBar.openMainMenu();
             appBar.checkMenuItemDisabled(R.string.main);
             appBar.checkMenuItemEnabled(R.string.news);
@@ -49,7 +49,7 @@ public class NavigationTest extends BaseUiTest {
             appBar.clickMenuItem(R.string.news);
             newsListPage.checkScreenDisplayed();
         });
-        step("Экран Новостей: «Новости» недоступны, «Главная» доступна", () -> {
+        step("Экран Новостей: Новости недоступны, Главная доступна", () -> {
             appBar.openMainMenu();
             appBar.checkMenuItemDisabled(R.string.news);
             appBar.checkMenuItemEnabled(R.string.main);
@@ -64,7 +64,7 @@ public class NavigationTest extends BaseUiTest {
     @Feature("Главный экран")
     @DisplayName("Переход ко всем новостям с главного экрана")
     public void allNews_onMainScreen_opensNewsList() {
-        step("Нажать «Все новости»", () -> {
+        step("Нажать Все новости", () -> {
             mainPage.clickAllNews();
             newsListPage.checkScreenDisplayed();
         });
@@ -72,13 +72,13 @@ public class NavigationTest extends BaseUiTest {
 
     @Test
     @Feature("Наша миссия")
-    @DisplayName("Переход на экран «Наша миссия» из верхней панели")
+    @DisplayName("Переход на экран Наша миссия из верхней панели")
     public void ourMissionButton_opensOurMissionScreen() {
-        step("Нажать кнопку «Наша миссия»", () -> {
+        step("Нажать кнопку Наша миссия", () -> {
             appBar.openOurMission();
             ourMissionPage.checkScreenDisplayed();
         });
-        step("Из меню экрана «Наша миссия» перейти в Новости", () -> {
+        step("Из меню экрана Наша миссия перейти в Новости", () -> {
             appBar.openMainMenu();
             appBar.checkMenuItemEnabled(R.string.main);
             appBar.checkMenuItemEnabled(R.string.news);

@@ -44,7 +44,7 @@ public class AuthTest extends BaseUiTest {
             authPage.setPassword(TestData.VALID_PASSWORD);
             authPage.checkPasswordFieldContains(TestData.VALID_PASSWORD);
         });
-        step("Нажать Войти — открывается главный экран", () -> {
+        step("Нажать Войти, открывается главный экран", () -> {
             authPage.clickEnter();
             mainPage.checkScreenDisplayed();
         });
@@ -54,7 +54,7 @@ public class AuthTest extends BaseUiTest {
     @Feature("Вход в систему")
     @DisplayName("Авторизация с незаполненными полями")
     public void signIn_withEmptyFields_showsEmptyFieldsToast() {
-        step("Нажать Войти — показан Toast «Логин и пароль не могут быть пустыми»", () ->
+        step("Нажать Войти, тост о пустых полях", () ->
                 authPage.clickEnterAndExpectToast(R.string.empty_login_or_password));
         step("Главный экран не открыт", mainPage::checkScreenNotDisplayed);
     }
@@ -64,7 +64,7 @@ public class AuthTest extends BaseUiTest {
     @DisplayName("Авторизация с заполненным только полем Логин")
     public void signIn_withOnlyLogin_showsEmptyFieldsToast() {
         step("Заполнить только поле Логин", () -> authPage.setLogin(TestData.VALID_LOGIN));
-        step("Нажать Войти — показан Toast о пустых полях", () ->
+        step("Нажать Войти, тост о пустых полях", () ->
                 authPage.clickEnterAndExpectToast(R.string.empty_login_or_password));
         step("Главный экран не открыт", mainPage::checkScreenNotDisplayed);
     }
@@ -74,7 +74,7 @@ public class AuthTest extends BaseUiTest {
     @DisplayName("Авторизация с заполненным только полем Пароль")
     public void signIn_withOnlyPassword_showsEmptyFieldsToast() {
         step("Заполнить только поле Пароль", () -> authPage.setPassword(TestData.VALID_PASSWORD));
-        step("Нажать Войти — показан Toast о пустых полях", () ->
+        step("Нажать Войти, тост о пустых полях", () ->
                 authPage.clickEnterAndExpectToast(R.string.empty_login_or_password));
         step("Главный экран не открыт", mainPage::checkScreenNotDisplayed);
     }
@@ -87,7 +87,7 @@ public class AuthTest extends BaseUiTest {
             authPage.setLogin("   ");
             authPage.setPassword("   ");
         });
-        step("Нажать Войти — показан Toast о пустых полях", () ->
+        step("Нажать Войти, тост о пустых полях", () ->
                 authPage.clickEnterAndExpectToast(R.string.empty_login_or_password));
         step("Главный экран не открыт", mainPage::checkScreenNotDisplayed);
     }
@@ -102,7 +102,7 @@ public class AuthTest extends BaseUiTest {
             authPage.setLogin(TestData.VALID_LOGIN);
             authPage.setPassword(TestData.randomPassword());
         });
-        step("Нажать Войти — показан Toast «Неверный логин или пароль»", () ->
+        step("Нажать Войти, тост о неверном логине или пароле", () ->
                 authPage.clickEnterAndExpectToast(R.string.wrong_login_or_password));
         step("Кнопка Войти снова доступна, индикатор загрузки скрыт", authPage::checkEnterButtonReady);
         step("Главный экран не открыт", mainPage::checkScreenNotDisplayed);
@@ -119,7 +119,7 @@ public class AuthTest extends BaseUiTest {
             authPage.setLogin(login);
             authPage.setPassword(password);
         });
-        step("Нажать Войти — показан Toast «Неверный логин или пароль»", () ->
+        step("Нажать Войти, тост о неверном логине или пароле", () ->
                 authPage.clickEnterAndExpectToast(R.string.wrong_login_or_password));
         step("Кнопка Войти снова доступна, индикатор загрузки скрыт", authPage::checkEnterButtonReady);
         step("Главный экран не открыт", mainPage::checkScreenNotDisplayed);
@@ -131,7 +131,7 @@ public class AuthTest extends BaseUiTest {
     public void logOut_afterSignIn_returnsToAuthScreen() {
         authSteps.signIn(TestData.VALID_LOGIN, TestData.VALID_PASSWORD);
         step("Открыть меню личного кабинета", appBar::openPersonalCabinet);
-        step("Нажать Выйти — открыт экран авторизации", () -> {
+        step("Нажать Выйти, открыт экран авторизации", () -> {
             appBar.clickLogOut();
             authPage.checkScreenDisplayed();
             mainPage.checkScreenNotDisplayed();

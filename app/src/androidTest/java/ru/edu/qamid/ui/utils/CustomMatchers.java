@@ -24,7 +24,7 @@ public class CustomMatchers {
         return new BoundedMatcher<View, DatePicker>(DatePicker.class) {
             @Override
             public void describeTo(Description description) {
-                description.appendText("minDate ≈ " + expected);
+                description.appendText("minDate ~ " + expected);
             }
 
             @Override

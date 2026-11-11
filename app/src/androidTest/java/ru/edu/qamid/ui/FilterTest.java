@@ -39,11 +39,11 @@ public class FilterTest extends BaseUiTest {
     public void filterWithOnlyStartDate_showsWrongPeriodDialog() {
         newsSteps.openFilterFromNewsList();
         step("Выбрать только дату начала периода", () -> filterPage.pickStartDate(Calendar.getInstance()));
-        step("Нажать Фильтровать — диалог «Неверно указан период»", () -> {
+        step("Нажать Фильтровать, диалог о неверном периоде", () -> {
             filterPage.clickApplyFilter();
             filterPage.checkWrongPeriodDialogDisplayed();
         });
-        step("Закрыть диалог — экран фильтра остаётся открытым", () -> {
+        step("Закрыть диалог, экран фильтра остаётся открытым", () -> {
             filterPage.confirmWrongPeriodDialog();
             filterPage.checkScreenDisplayed();
         });
@@ -55,11 +55,11 @@ public class FilterTest extends BaseUiTest {
     public void filterWithOnlyEndDate_showsWrongPeriodDialog() {
         newsSteps.openFilterFromNewsList();
         step("Выбрать только дату окончания периода", () -> filterPage.pickEndDate(Calendar.getInstance()));
-        step("Нажать Фильтровать — диалог «Неверно указан период»", () -> {
+        step("Нажать Фильтровать, диалог о неверном периоде", () -> {
             filterPage.clickApplyFilter();
             filterPage.checkWrongPeriodDialogDisplayed();
         });
-        step("Закрыть диалог — экран фильтра остаётся открытым", () -> {
+        step("Закрыть диалог, экран фильтра остаётся открытым", () -> {
             filterPage.confirmWrongPeriodDialog();
             filterPage.checkScreenDisplayed();
         });
@@ -70,7 +70,7 @@ public class FilterTest extends BaseUiTest {
     @DisplayName("Фильтр из списка новостей не содержит чекбоксов статуса")
     public void filterFromNewsList_hidesStatusCheckBoxes() {
         newsSteps.openFilterFromNewsList();
-        step("Чекбоксы «Активна» / «Не активна» скрыты", filterPage::checkStatusCheckBoxesHidden);
+        step("Чекбоксы Активна / Не активна скрыты", filterPage::checkStatusCheckBoxesHidden);
     }
 
     @Test
@@ -78,7 +78,7 @@ public class FilterTest extends BaseUiTest {
     @DisplayName("Фильтр из панели управления содержит отмеченные чекбоксы статуса")
     public void filterFromControlPanel_showsCheckedStatusCheckBoxes() {
         newsSteps.openFilterFromControlPanel();
-        step("Чекбоксы «Активна» / «Не активна» видимы и отмечены",
+        step("Чекбоксы Активна / Не активна видимы и отмечены",
                 filterPage::checkStatusCheckBoxesShownAndChecked);
     }
 
@@ -87,7 +87,7 @@ public class FilterTest extends BaseUiTest {
     @DisplayName("Кнопка Отмена закрывает фильтр без применения")
     public void cancelFilter_returnsToNewsList() {
         newsSteps.openFilterFromNewsList();
-        step("Нажать Отмена — открыт список новостей", () -> {
+        step("Нажать Отмена, открыт список новостей", () -> {
             filterPage.clickCancel();
             newsListPage.checkScreenDisplayed();
         });

@@ -32,7 +32,7 @@ public class OurMissionTest extends BaseUiTest {
     @Before
     public void openOurMission() {
         authSteps.ensureLoggedIn(TestData.VALID_LOGIN, TestData.VALID_PASSWORD);
-        step("Открыть экран «Наша миссия»", () -> {
+        step("Открыть экран Наша миссия", () -> {
             appBar.openOurMission();
             ourMissionPage.checkScreenDisplayed();
         });
@@ -44,11 +44,11 @@ public class OurMissionTest extends BaseUiTest {
     public void missionCard_click_togglesDescription() {
         step("Описание карточки изначально скрыто", () ->
                 ourMissionPage.checkDescriptionCollapsed(CARD_TITLE));
-        step("Нажать на карточку — описание раскрыто", () -> {
+        step("Нажать на карточку, описание раскрыто", () -> {
             ourMissionPage.clickCardWithTitle(CARD_TITLE);
             ourMissionPage.checkDescriptionExpanded(CARD_TITLE, CARD_DESCRIPTION);
         });
-        step("Нажать повторно — описание скрыто", () -> {
+        step("Нажать повторно, описание скрыто", () -> {
             ourMissionPage.clickCardWithTitle(CARD_TITLE);
             ourMissionPage.checkDescriptionCollapsed(CARD_TITLE);
         });

@@ -62,7 +62,7 @@ public class NewsSteps {
     }
 
     public void deleteNewsWithTitle(String title, boolean confirm) {
-        step("Нажать иконку удаления у новости «" + title + "»", () -> {
+        step("Нажать иконку удаления у новости '" + title + "'", () -> {
             controlPanelPage.clickDeleteForTitle(title);
             controlPanelPage.checkDeleteDialogDisplayed();
         });

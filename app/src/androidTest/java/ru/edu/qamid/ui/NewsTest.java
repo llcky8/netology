@@ -53,18 +53,18 @@ public class NewsTest extends BaseUiTest {
     public void createNews_withAllFieldsFilled_appearsAsActiveInControlPanel() {
         String title = TestData.randomNewsTitle();
         newsSteps.createNews(title, createdTitles);
-        step("Новость создана со статусом «Активна»", () ->
+        step("Новость создана со статусом Активна", () ->
                 controlPanelPage.checkNewsStatus(title, R.string.news_control_panel_active));
     }
 
     @Test
     @Feature("Создание новости")
-    @DisplayName("Форма создания: заголовок «Создание» и заблокированный переключатель активности")
+    @DisplayName("Форма создания: заголовок Создание и заблокированный переключатель активности")
     public void createForm_hasCreatingTitle_andLockedActiveSwitch() {
         newsSteps.openCreateNewsForm();
-        step("В верхней панели заголовок «Создание»", () ->
+        step("В верхней панели заголовок Создание", () ->
                 createEditNewsPage.checkFormTitle(R.string.creating));
-        step("Переключатель «Активна» включён и недоступен", createEditNewsPage::checkActiveSwitchLockedOn);
+        step("Переключатель Активна включён и недоступен", createEditNewsPage::checkActiveSwitchLockedOn);
     }
 
     @Test
@@ -91,7 +91,7 @@ public class NewsTest extends BaseUiTest {
             createEditNewsPage.pickTodayAsPublishDate();
             createEditNewsPage.pickPublishTime(23, 59);
         });
-        step("Нажать Сохранить — Toast «Заполните пустые поля»", () ->
+        step("Нажать Сохранить, тост о пустых полях", () ->
                 createEditNewsPage.clickSaveAndExpectToast(R.string.empty_fields));
         step("Форма создания осталась открытой", createEditNewsPage::checkScreenDisplayed);
     }
@@ -104,11 +104,11 @@ public class NewsTest extends BaseUiTest {
         createdTitles.add(title);
         newsSteps.openCreateNewsForm();
         step("Заполнить заголовок", () -> createEditNewsPage.fillTitle(title));
-        step("Нажать Отмена — показан диалог подтверждения", () -> {
+        step("Нажать Отмена, показан диалог подтверждения", () -> {
             createEditNewsPage.clickCancel();
             createEditNewsPage.checkCancelDialogDisplayed();
         });
-        step("Подтвердить — возврат в панель управления", () -> {
+        step("Подтвердить, открыта панель управления", () -> {
             createEditNewsPage.confirmDialog();
             controlPanelPage.checkScreenDisplayed();
         });
@@ -123,7 +123,7 @@ public class NewsTest extends BaseUiTest {
         String title = TestData.randomNewsTitle();
         newsSteps.openCreateNewsForm();
         step("Заполнить заголовок", () -> createEditNewsPage.fillTitle(title));
-        step("Нажать Отмена, затем в диалоге — Отмена", () -> {
+        step("Нажать Отмена, в диалоге тоже Отмена", () -> {
             createEditNewsPage.clickCancel();
             createEditNewsPage.checkCancelDialogDisplayed();
             createEditNewsPage.dismissDialog();
@@ -141,7 +141,7 @@ public class NewsTest extends BaseUiTest {
         String title = TestData.randomNewsTitle();
         newsSteps.createNews(title, createdTitles);
         newsSteps.deleteNewsWithTitle(title, true);
-        step("Удалённой новости нет в адаптере списка", () ->
+        step("Новости нет в списке", () ->
                 controlPanelPage.checkNewsWithTitleNotExist(title));
     }
 
@@ -188,7 +188,7 @@ public class NewsTest extends BaseUiTest {
         String title = TestData.randomNewsTitle();
         newsSteps.createNews(title, createdTitles);
 
-        step("Открыть редактирование и выключить «Активна»", () -> {
+        step("Открыть редактирование и выключить переключатель Активна", () -> {
             controlPanelPage.clickEditForTitle(title);
             createEditNewsPage.checkScreenDisplayed();
             createEditNewsPage.clickActiveSwitch();
@@ -198,7 +198,7 @@ public class NewsTest extends BaseUiTest {
             createEditNewsPage.clickSave();
             controlPanelPage.checkScreenDisplayed();
         });
-        step("В карточке статус «Не активна»", () ->
+        step("В карточке статус Не активна", () ->
                 controlPanelPage.checkNewsStatus(title, R.string.news_control_panel_not_active));
     }
 
@@ -207,11 +207,11 @@ public class NewsTest extends BaseUiTest {
     @DisplayName("Дату публикации нельзя выбрать в прошлом")
     public void publishDate_cannotBeSetBeforeToday() {
         newsSteps.openCreateNewsForm();
-        step("Открыть выбор даты — minDate календаря равен текущему моменту", () -> {
+        step("Открыть выбор даты, minDate календаря равен текущему моменту", () -> {
             createEditNewsPage.openPublishDatePicker();
             createEditNewsPage.checkDatePickerMinDateIsNow(60_000);
         });
-        step("Выбрать сегодняшнюю дату — она подставляется в поле", () -> {
+        step("Выбрать сегодняшнюю дату, она подставляется в поле", () -> {
             Calendar today = Calendar.getInstance();
             createEditNewsPage.setPickerDate(today);
             createEditNewsPage.confirmPicker();

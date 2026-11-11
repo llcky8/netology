@@ -53,7 +53,7 @@ public class NewsControlPanelPage {
             }
             SystemClock.sleep(POLL_INTERVAL_MS);
         } while (SystemClock.uptimeMillis() < deadline);
-        throw new AssertionError("Новость «" + title + "» не появилась в списке", last);
+        throw new AssertionError("Новость '" + title + "' не появилась в списке", last);
     }
 
     public void checkNewsWithTitleDisplayed(String title) {
@@ -71,7 +71,7 @@ public class NewsControlPanelPage {
             }
             SystemClock.sleep(POLL_INTERVAL_MS);
         } while (SystemClock.uptimeMillis() < deadline);
-        throw new AssertionError("Новость «" + title + "» всё ещё есть в списке");
+        throw new AssertionError("Новость '" + title + "' всё ещё есть в списке");
     }
 
     public void clickDeleteForTitle(String title) {
