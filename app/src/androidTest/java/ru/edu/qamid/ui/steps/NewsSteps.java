@@ -2,6 +2,8 @@ package ru.edu.qamid.ui.steps;
 
 import static ru.edu.qamid.ui.utils.AllureSteps.step;
 
+import java.util.Calendar;
+
 import ru.edu.qamid.R;
 import ru.edu.qamid.ui.data.TestData;
 import ru.edu.qamid.ui.pages.AppBarPage;
@@ -50,12 +52,96 @@ public class NewsSteps {
             createEditNewsPage.pickPublishTime(23, 59);
             createEditNewsPage.fillDescription(TestData.DESCRIPTION);
         });
-        step("Нажать кнопку Сохранить", () -> {
+        saveNews();
+        checkNewsInList(title);
+    }
+
+    public void saveNews() {
+        step("Нажать Сохранить, открыта панель управления", () -> {
             createEditNewsPage.clickSave();
             controlPanelPage.checkScreenDisplayed();
         });
-        step("В панели управления есть созданная новость", () ->
+    }
+
+    public void checkNewsInList(String title) {
+        step("Новость есть в списке панели управления", () ->
                 controlPanelPage.checkNewsWithTitleDisplayed(title));
+    }
+
+    public void checkNewsNotInList(String title) {
+        step("Новости нет в списке панели управления", () ->
+                controlPanelPage.checkNewsWithTitleNotExist(title));
+    }
+
+    public void checkNewsIsActive(String title) {
+        step("У новости статус Активна", () ->
+                controlPanelPage.checkNewsStatus(title, R.string.news_control_panel_active));
+    }
+
+    public void checkNewsIsNotActive(String title) {
+        step("У новости статус Не активна", () ->
+                controlPanelPage.checkNewsStatus(title, R.string.news_control_panel_not_active));
+    }
+
+    public void checkCreateFormTitle() {
+        step("В верхней панели заголовок Создание", () ->
+                createEditNewsPage.checkFormTitle(R.string.creating));
+    }
+
+    public void checkActiveSwitchLockedOn() {
+        step("Переключатель Активна включён и недоступен", createEditNewsPage::checkActiveSwitchLockedOn);
+    }
+
+    public void selectCategory(String category) {
+        step("Выбрать категорию из выпадающего списка", () ->
+                createEditNewsPage.selectCategoryFromDropdown(category));
+    }
+
+    public void fillTitle(String title) {
+        step("Заполнить заголовок", () -> createEditNewsPage.fillTitle(title));
+    }
+
+    public void checkTitle(String title) {
+        step("В поле Заголовок значение '" + title + "'", () -> createEditNewsPage.checkTitle(title));
+    }
+
+    public void fillAllFieldsExceptDescription(String title) {
+        step("Заполнить все поля, кроме Описания", () -> {
+            createEditNewsPage.fillCategory(TestData.CATEGORY);
+            createEditNewsPage.fillTitle(title);
+            createEditNewsPage.pickTodayAsPublishDate();
+            createEditNewsPage.pickPublishTime(23, 59);
+        });
+    }
+
+    public void clickSaveAndCheckEmptyFieldsToast() {
+        step("Нажать Сохранить, тост о пустых полях", () ->
+                createEditNewsPage.clickSaveAndExpectToast(R.string.empty_fields));
+    }
+
+    public void checkFormDisplayed() {
+        step("Форма осталась открытой", createEditNewsPage::checkScreenDisplayed);
+    }
+
+    public void clickCancel() {
+        step("Нажать Отмена, показан диалог подтверждения", () -> {
+            createEditNewsPage.clickCancel();
+            createEditNewsPage.checkCancelDialogDisplayed();
+        });
+    }
+
+    public void confirmCancel() {
+        step("Подтвердить, открыта панель управления", () -> {
+            createEditNewsPage.confirmDialog();
+            controlPanelPage.checkScreenDisplayed();
+        });
+    }
+
+    public void dismissCancel() {
+        step("В диалоге нажать Отмена, форма осталась открытой", () -> {
+            createEditNewsPage.dismissDialog();
+            createEditNewsPage.checkScreenDisplayed();
+        });
     }
 
     public void deleteNewsWithTitle(String title, boolean confirm) {
@@ -68,6 +154,38 @@ public class NewsSteps {
         } else {
             step("Отменить удаление", controlPanelPage::cancelDialog);
         }
+    }
+
+    public void openEditForm(String title) {
+        step("Открыть редактирование новости", () -> {
+            controlPanelPage.clickEditForTitle(title);
+            createEditNewsPage.checkScreenDisplayed();
+            createEditNewsPage.checkFormTitle(R.string.editing);
+            createEditNewsPage.checkTitle(title);
+        });
+    }
+
+    public void switchOffActive() {
+        step("Выключить переключатель Активна", () -> {
+            createEditNewsPage.clickActiveSwitch();
+            createEditNewsPage.checkActiveSwitchOff();
+        });
+    }
+
+    public void checkPublishDateMinIsToday() {
+        step("Открыть выбор даты, минимальная дата календаря равна сегодняшней", () -> {
+            createEditNewsPage.openPublishDatePicker();
+            createEditNewsPage.checkDatePickerMinDateIsNow(60_000);
+        });
+    }
+
+    public void pickTodayAndCheckPublishDate() {
+        step("Выбрать сегодняшнюю дату, она подставляется в поле", () -> {
+            Calendar today = Calendar.getInstance();
+            createEditNewsPage.setPickerDate(today);
+            createEditNewsPage.confirmPicker();
+            createEditNewsPage.checkPublishDate(today);
+        });
     }
 
     public void openFilterFromNewsList() {

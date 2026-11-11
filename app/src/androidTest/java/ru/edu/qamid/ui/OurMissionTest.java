@@ -1,7 +1,5 @@
 package ru.edu.qamid.ui;
 
-import static ru.edu.qamid.ui.utils.AllureSteps.step;
-
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Before;
@@ -13,9 +11,9 @@ import io.qameta.allure.kotlin.Epic;
 import io.qameta.allure.kotlin.Feature;
 import io.qameta.allure.kotlin.junit4.DisplayName;
 import ru.edu.qamid.ui.data.TestData;
-import ru.edu.qamid.ui.pages.AppBarPage;
-import ru.edu.qamid.ui.pages.OurMissionPage;
 import ru.edu.qamid.ui.steps.AuthSteps;
+import ru.edu.qamid.ui.steps.NavigationSteps;
+import ru.edu.qamid.ui.steps.OurMissionSteps;
 
 @RunWith(AndroidJUnit4.class)
 @Epic("Наша миссия")
@@ -26,17 +24,14 @@ public class OurMissionTest extends BaseUiTest {
             "Нет шаблона и стандарта, есть только дух, который живет в разных домах по-разному. "
                     + "Но всегда он добрый, любящий и помогающий.";
 
-    private final AppBarPage appBar = new AppBarPage();
-    private final OurMissionPage ourMissionPage = new OurMissionPage();
     private final AuthSteps authSteps = new AuthSteps();
+    private final NavigationSteps navigationSteps = new NavigationSteps();
+    private final OurMissionSteps ourMissionSteps = new OurMissionSteps();
 
     @Before
     public void openOurMission() {
         authSteps.ensureLoggedIn(TestData.VALID_LOGIN, TestData.VALID_PASSWORD);
-        step("Открыть экран Наша миссия", () -> {
-            appBar.openOurMission();
-            ourMissionPage.checkScreenDisplayed();
-        });
+        navigationSteps.openOurMission();
     }
 
     @Test
@@ -44,15 +39,8 @@ public class OurMissionTest extends BaseUiTest {
     @DisplayName("Раскрытие и сворачивание карточки миссии")
     @Description("Нажатие на карточку раскрывает описание, повторное нажатие скрывает")
     public void missionCardClickTogglesDescription() {
-        step("Описание карточки изначально скрыто", () ->
-                ourMissionPage.checkDescriptionCollapsed(CARD_TITLE));
-        step("Нажать на карточку, описание раскрыто", () -> {
-            ourMissionPage.clickCardWithTitle(CARD_TITLE);
-            ourMissionPage.checkDescriptionExpanded(CARD_TITLE, CARD_DESCRIPTION);
-        });
-        step("Нажать повторно, описание скрыто", () -> {
-            ourMissionPage.clickCardWithTitle(CARD_TITLE);
-            ourMissionPage.checkDescriptionCollapsed(CARD_TITLE);
-        });
+        ourMissionSteps.checkDescriptionCollapsed(CARD_TITLE);
+        ourMissionSteps.expandCard(CARD_TITLE, CARD_DESCRIPTION);
+        ourMissionSteps.collapseCard(CARD_TITLE);
     }
 }

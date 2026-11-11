@@ -1,7 +1,5 @@
 package ru.edu.qamid.ui;
 
-import static ru.edu.qamid.ui.utils.AllureSteps.step;
-
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.After;
@@ -10,7 +8,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import io.qameta.allure.kotlin.Description;
@@ -19,21 +16,17 @@ import io.qameta.allure.kotlin.Feature;
 import io.qameta.allure.kotlin.junit4.DisplayName;
 import ru.edu.qamid.ui.data.NewsCleanupClient;
 import ru.edu.qamid.ui.data.TestData;
-import ru.edu.qamid.ui.pages.FilterPage;
-import ru.edu.qamid.ui.pages.NewsControlPanelPage;
-import ru.edu.qamid.ui.pages.NewsListPage;
 import ru.edu.qamid.ui.steps.AuthSteps;
+import ru.edu.qamid.ui.steps.FilterSteps;
 import ru.edu.qamid.ui.steps.NewsSteps;
 
 @RunWith(AndroidJUnit4.class)
 @Epic("Фильтр")
 public class FilterTest extends BaseUiTest {
 
-    private final FilterPage filterPage = new FilterPage();
-    private final NewsListPage newsListPage = new NewsListPage();
-    private final NewsControlPanelPage controlPanelPage = new NewsControlPanelPage();
     private final AuthSteps authSteps = new AuthSteps();
     private final NewsSteps newsSteps = new NewsSteps();
+    private final FilterSteps filterSteps = new FilterSteps();
     private final NewsCleanupClient cleanupClient = new NewsCleanupClient();
 
     private final List<String> createdTitles = new ArrayList<>();
@@ -54,15 +47,9 @@ public class FilterTest extends BaseUiTest {
     @Description("Если указана только начальная дата, фильтр не применяется и показывается диалог Неверно указан период")
     public void filterWithOnlyStartDate() {
         newsSteps.openFilterFromNewsList();
-        step("Выбрать только дату начала периода", () -> filterPage.pickStartDate(Calendar.getInstance()));
-        step("Нажать Фильтровать, диалог о неверном периоде", () -> {
-            filterPage.clickApplyFilter();
-            filterPage.checkWrongPeriodDialogDisplayed();
-        });
-        step("Закрыть диалог, экран фильтра остаётся открытым", () -> {
-            filterPage.confirmWrongPeriodDialog();
-            filterPage.checkScreenDisplayed();
-        });
+        filterSteps.pickOnlyStartDate();
+        filterSteps.applyAndCheckWrongPeriodDialog();
+        filterSteps.closeWrongPeriodDialog();
     }
 
     @Test
@@ -71,15 +58,9 @@ public class FilterTest extends BaseUiTest {
     @Description("Если указана только конечная дата, фильтр не применяется и показывается диалог Неверно указан период")
     public void filterWithOnlyEndDate() {
         newsSteps.openFilterFromNewsList();
-        step("Выбрать только дату окончания периода", () -> filterPage.pickEndDate(Calendar.getInstance()));
-        step("Нажать Фильтровать, диалог о неверном периоде", () -> {
-            filterPage.clickApplyFilter();
-            filterPage.checkWrongPeriodDialogDisplayed();
-        });
-        step("Закрыть диалог, экран фильтра остаётся открытым", () -> {
-            filterPage.confirmWrongPeriodDialog();
-            filterPage.checkScreenDisplayed();
-        });
+        filterSteps.pickOnlyEndDate();
+        filterSteps.applyAndCheckWrongPeriodDialog();
+        filterSteps.closeWrongPeriodDialog();
     }
 
     @Test
@@ -88,7 +69,7 @@ public class FilterTest extends BaseUiTest {
     @Description("В фильтре, открытом из списка новостей, нет чекбоксов Активна и Не активна")
     public void filterFromNewsListHidesStatusCheckBoxes() {
         newsSteps.openFilterFromNewsList();
-        step("Чекбоксы Активна / Не активна скрыты", filterPage::checkStatusCheckBoxesHidden);
+        filterSteps.checkStatusCheckBoxesHidden();
     }
 
     @Test
@@ -97,8 +78,7 @@ public class FilterTest extends BaseUiTest {
     @Description("В фильтре, открытом из панели управления, чекбоксы Активна и Не активна видны и отмечены")
     public void filterFromControlPanelShowsStatusCheckBoxes() {
         newsSteps.openFilterFromControlPanel();
-        step("Чекбоксы Активна / Не активна видимы и отмечены",
-                filterPage::checkStatusCheckBoxesShownAndChecked);
+        filterSteps.checkStatusCheckBoxesShownAndChecked();
     }
 
     @Test
@@ -110,23 +90,10 @@ public class FilterTest extends BaseUiTest {
         createdTitles.add(title);
         newsSteps.openNewsControlPanel();
         newsSteps.createNews(title);
-
-        step("Оставить в фильтре только Не активна, активной новости нет в списке", () -> {
-            controlPanelPage.clickFilterButton();
-            filterPage.checkScreenDisplayed();
-            filterPage.clickActiveCheckBox();
-            filterPage.clickApplyFilter();
-            controlPanelPage.checkScreenDisplayed();
-            controlPanelPage.checkNewsWithTitleNotExist(title);
-        });
-        step("Оставить в фильтре только Активна, новость есть в списке", () -> {
-            controlPanelPage.clickFilterButton();
-            filterPage.checkScreenDisplayed();
-            filterPage.clickInactiveCheckBox();
-            filterPage.clickApplyFilter();
-            controlPanelPage.checkScreenDisplayed();
-            controlPanelPage.checkNewsWithTitleDisplayed(title);
-        });
+        filterSteps.filterOnlyNotActiveInControlPanel();
+        newsSteps.checkNewsNotInList(title);
+        filterSteps.filterOnlyActiveInControlPanel();
+        newsSteps.checkNewsInList(title);
     }
 
     @Test
@@ -135,9 +102,6 @@ public class FilterTest extends BaseUiTest {
     @Description("Кнопка Отмена возвращает к списку новостей")
     public void cancelFilterReturnsToNewsList() {
         newsSteps.openFilterFromNewsList();
-        step("Нажать Отмена, открыт список новостей", () -> {
-            filterPage.clickCancel();
-            newsListPage.checkScreenDisplayed();
-        });
+        filterSteps.cancelFilter();
     }
 }

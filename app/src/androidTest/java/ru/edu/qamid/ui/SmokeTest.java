@@ -1,7 +1,5 @@
 package ru.edu.qamid.ui;
 
-import static ru.edu.qamid.ui.utils.AllureSteps.step;
-
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Test;
@@ -24,6 +22,6 @@ public class SmokeTest extends BaseUiTest {
     @DisplayName("После splash открывается экран входа или главный экран")
     @Description("После запуска приложение уходит с экрана загрузки на экран входа или на главный экран")
     public void appLeavesSplashScreen() {
-        step("Splash-экран сменяется рабочим экраном приложения", authSteps::isLoggedInAfterSplash);
+        authSteps.checkSplashFinished();
     }
 }

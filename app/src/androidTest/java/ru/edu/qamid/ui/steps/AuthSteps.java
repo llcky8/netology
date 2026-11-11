@@ -33,6 +33,10 @@ public class AuthSteps {
         throw new AssertionError("После splash не открылся ни вход, ни главный экран");
     }
 
+    public void checkSplashFinished() {
+        step("Splash-экран сменяется рабочим экраном приложения", this::isLoggedInAfterSplash);
+    }
+
     public void signIn(String login, String password) {
         step("Войти под " + login, () -> {
             authPage.setLogin(login);
@@ -56,5 +60,52 @@ public class AuthSteps {
             });
         }
         authPage.checkScreenDisplayed();
+    }
+
+    public void fillLogin(String login) {
+        step("Заполнить поле Логин", () -> {
+            authPage.setLogin(login);
+            authPage.checkLoginFieldContains(login);
+        });
+    }
+
+    public void fillPassword(String password) {
+        step("Заполнить поле Пароль", () -> {
+            authPage.setPassword(password);
+            authPage.checkPasswordFieldContains(password);
+        });
+    }
+
+    public void clickEnterAndCheckMainScreen() {
+        step("Нажать Войти, открывается главный экран", () -> {
+            authPage.clickEnter();
+            mainPage.checkScreenDisplayed();
+        });
+    }
+
+    public void clickEnterAndCheckEmptyFieldsToast() {
+        step("Нажать Войти, тост о пустых полях", () ->
+                authPage.clickEnterAndExpectToast(R.string.empty_login_or_password));
+    }
+
+    public void clickEnterAndCheckWrongCredentialsToast() {
+        step("Нажать Войти, тост о неверном логине или пароле", () ->
+                authPage.clickEnterAndExpectToast(R.string.wrong_login_or_password));
+    }
+
+    public void checkAuthScreenDisplayed() {
+        step("Экран авторизации остаётся открытым", authPage::checkScreenDisplayed);
+    }
+
+    public void checkEnterButtonReady() {
+        step("Кнопка Войти снова доступна, индикатор загрузки скрыт", authPage::checkEnterButtonReady);
+    }
+
+    public void logOut() {
+        step("Открыть меню личного кабинета", appBar::openPersonalCabinet);
+        step("Нажать Выйти, открыт экран авторизации", () -> {
+            appBar.clickLogOut();
+            authPage.checkScreenDisplayed();
+        });
     }
 }
