@@ -46,7 +46,7 @@ public class CreateEditNewsPage {
                 .check(matches(withText(titleRes)));
     }
 
-    public void fillCategory(String category) {
+    public void enterCategory(String category) {
         onView(withId(R.id.news_category_auto_complete))
                 .perform(replaceText(category), closeSoftKeyboard());
     }
@@ -58,7 +58,7 @@ public class CreateEditNewsPage {
                 .perform(click());
     }
 
-    public void fillTitle(String title) {
+    public void enterTitle(String title) {
         onView(withId(R.id.news_title_edit_text))
                 .perform(replaceText(title), closeSoftKeyboard());
     }
@@ -67,7 +67,7 @@ public class CreateEditNewsPage {
         onView(withId(R.id.news_title_edit_text)).check(matches(withText(title)));
     }
 
-    public void fillDescription(String description) {
+    public void enterDescription(String description) {
         onView(withId(R.id.news_description_edit_text))
                 .perform(scrollTo(), replaceText(description), closeSoftKeyboard());
     }
@@ -87,13 +87,13 @@ public class CreateEditNewsPage {
         );
     }
 
-    public void pickTodayAsPublishDate() {
+    public void setTodayPublishDate() {
         openPublishDatePicker();
         setPickerDate(Calendar.getInstance());
         confirmPicker();
     }
 
-    public void pickPublishTime(int hour, int minute) {
+    public void setPublishTime(int hour, int minute) {
         onView(withId(R.id.news_publish_time_edit_text)).perform(click());
         onView(isAssignableFrom(TimePicker.class)).perform(PickerActions.setTime(hour, minute));
         confirmPicker();

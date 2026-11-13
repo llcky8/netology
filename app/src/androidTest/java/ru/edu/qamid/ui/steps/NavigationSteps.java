@@ -1,6 +1,6 @@
 package ru.edu.qamid.ui.steps;
 
-import static ru.edu.qamid.ui.utils.AllureSteps.step;
+import static ru.edu.qamid.ui.utils.AllureUtils.step;
 
 import ru.edu.qamid.R;
 import ru.edu.qamid.ui.pages.AppBarPage;
@@ -25,7 +25,7 @@ public class NavigationSteps {
 
     public void clickNewsInMenu() {
         step("Перейти в Новости", () -> {
-            appBar.clickMenuItem(R.string.news);
+            appBar.selectMenuItem(R.string.news);
             newsListPage.checkScreenDisplayed();
         });
     }
@@ -40,7 +40,7 @@ public class NavigationSteps {
 
     public void clickMainInMenu() {
         step("Вернуться на главный экран через меню", () -> {
-            appBar.clickMenuItem(R.string.main);
+            appBar.selectMenuItem(R.string.main);
             mainPage.checkScreenDisplayed();
         });
     }
@@ -64,7 +64,7 @@ public class NavigationSteps {
             appBar.openMainMenu();
             appBar.checkMenuItemEnabled(R.string.main);
             appBar.checkMenuItemEnabled(R.string.news);
-            appBar.clickMenuItem(R.string.news);
+            appBar.selectMenuItem(R.string.news);
             newsListPage.checkScreenDisplayed();
         });
     }

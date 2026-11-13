@@ -30,7 +30,7 @@ public class OurMissionTest extends BaseUiTest {
 
     @Before
     public void openOurMission() {
-        authSteps.ensureLoggedIn(TestData.VALID_LOGIN, TestData.VALID_PASSWORD);
+        authSteps.makeSureLoggedIn(TestData.VALID_LOGIN, TestData.VALID_PASSWORD);
         navigationSteps.openOurMission();
     }
 

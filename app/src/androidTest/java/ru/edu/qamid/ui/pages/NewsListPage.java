@@ -22,11 +22,11 @@ public class NewsListPage {
                 .check(matches(withEffectiveVisibility(Visibility.GONE)));
     }
 
-    public void clickFilterButton() {
+    public void clickFilterIcon() {
         onView(withId(R.id.news_filter_button)).perform(click());
     }
 
-    public void clickEditNewsButton() {
+    public void clickControlPanelButton() {
         onView(withId(R.id.news_edit_button)).perform(click());
     }
 }

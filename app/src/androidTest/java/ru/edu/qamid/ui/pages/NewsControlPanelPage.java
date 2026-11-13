@@ -4,6 +4,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -33,15 +34,15 @@ public class NewsControlPanelPage {
         onView(withId(R.id.news_filter_button)).check(matches(isDisplayed()));
     }
 
-    public void clickAddNews() {
+    public void clickPlusButton() {
         onView(withId(R.id.add_news_image_view)).perform(click());
     }
 
-    public void clickFilterButton() {
+    public void clickFilterIcon() {
         onView(withId(R.id.news_filter_button)).perform(click());
     }
 
-    public void scrollToNewsWithTitle(String title) {
+    public void findNewsInList(String title) {
         long deadline = SystemClock.uptimeMillis() + LIST_UPDATE_TIMEOUT_MS;
         PerformException last;
         do {
@@ -56,12 +57,13 @@ public class NewsControlPanelPage {
         throw new AssertionError("Новость '" + title + "' не появилась в списке", last);
     }
 
-    public void checkNewsWithTitleDisplayed(String title) {
-        scrollToNewsWithTitle(title);
-        onView(cardForTitle(title)).check(matches(isDisplayed()));
+    public void checkNewsShown(String title) {
+        findNewsInList(title);
+        onView(newsCard(title)).check(matches(isDisplayed()));
     }
 
-    public void checkNewsWithTitleNotExist(String title) {
+    public void checkNewsAbsent(String title) {
+        WaitUtils.waitFor(withId(R.id.news_list_recycler_view), matches(hasMinimumChildCount(1)));
         long deadline = SystemClock.uptimeMillis() + LIST_UPDATE_TIMEOUT_MS;
         do {
             try {
@@ -74,14 +76,14 @@ public class NewsControlPanelPage {
         throw new AssertionError("Новость '" + title + "' всё ещё есть в списке");
     }
 
-    public void clickDeleteForTitle(String title) {
-        scrollToNewsWithTitle(title);
-        onView(childOfCard(title, R.id.news_item_delete_image_view)).perform(click());
+    public void clickDeleteIcon(String title) {
+        findNewsInList(title);
+        onView(insideNewsCard(title, R.id.news_item_delete_image_view)).perform(click());
     }
 
-    public void clickEditForTitle(String title) {
-        scrollToNewsWithTitle(title);
-        onView(childOfCard(title, R.id.news_item_edit_image_view)).perform(click());
+    public void clickEditIcon(String title) {
+        findNewsInList(title);
+        onView(insideNewsCard(title, R.id.news_item_edit_image_view)).perform(click());
     }
 
     public void checkDeleteDialogDisplayed() {
@@ -97,9 +99,9 @@ public class NewsControlPanelPage {
     }
 
     public void checkNewsStatus(String title, @StringRes int statusTextRes) {
-        scrollToNewsWithTitle(title);
+        findNewsInList(title);
         WaitUtils.waitFor(
-                childOfCard(title, R.id.news_item_published_text_view),
+                insideNewsCard(title, R.id.news_item_published_text_view),
                 matches(withText(statusTextRes))
         );
     }
@@ -110,14 +112,14 @@ public class NewsControlPanelPage {
                         hasDescendant(withText(title))));
     }
 
-    private Matcher<View> cardForTitle(String title) {
+    private Matcher<View> newsCard(String title) {
         return allOf(
                 withId(R.id.news_item_material_card_view),
                 hasDescendant(allOf(withId(R.id.news_item_title_text_view), withText(title)))
         );
     }
 
-    private Matcher<View> childOfCard(String title, int childId) {
-        return allOf(withId(childId), isDescendantOfA(cardForTitle(title)));
+    private Matcher<View> insideNewsCard(String title, int childId) {
+        return allOf(withId(childId), isDescendantOfA(newsCard(title)));
     }
 }

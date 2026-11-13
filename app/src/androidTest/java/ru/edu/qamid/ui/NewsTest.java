@@ -20,7 +20,7 @@ import ru.edu.qamid.ui.steps.AuthSteps;
 import ru.edu.qamid.ui.steps.NewsSteps;
 
 @RunWith(AndroidJUnit4.class)
-@Epic("Новости")
+@Epic("Работа с новостями")
 public class NewsTest extends BaseUiTest {
 
     private final NewsSteps newsSteps = new NewsSteps();
@@ -30,9 +30,9 @@ public class NewsTest extends BaseUiTest {
     private final List<String> createdTitles = new ArrayList<>();
 
     @Before
-    public void signInAndOpenControlPanel() {
-        authSteps.ensureLoggedIn(TestData.VALID_LOGIN, TestData.VALID_PASSWORD);
-        newsSteps.openNewsControlPanel();
+    public void prepareControlPanel() {
+        authSteps.makeSureLoggedIn(TestData.VALID_LOGIN, TestData.VALID_PASSWORD);
+        newsSteps.goToControlPanel();
     }
 
     @After
@@ -41,126 +41,126 @@ public class NewsTest extends BaseUiTest {
     }
 
     @Test
-    @Feature("Создание новости")
+    @Feature("Добавление новости")
     @DisplayName("Создание новости со всеми заполненными полями")
     @Description("Новость со всеми заполненными полями сохраняется и видна в панели управления со статусом Активна")
     public void createNewsWithAllFieldsFilled() {
-        String title = TestData.randomNewsTitle();
+        String title = TestData.uniqueNewsTitle();
         createdTitles.add(title);
-        newsSteps.createNews(title);
+        newsSteps.addNews(title);
         newsSteps.checkNewsIsActive(title);
     }
 
     @Test
-    @Feature("Создание новости")
+    @Feature("Добавление новости")
     @DisplayName("Форма создания: заголовок Создание и заблокированный переключатель активности")
     @Description("При создании новости в шапке написано Создание, переключатель Активна включён и его нельзя изменить")
     public void createFormHasLockedActiveSwitch() {
-        newsSteps.openCreateNewsForm();
+        newsSteps.openNewsForm();
         newsSteps.checkCreateFormTitle();
         newsSteps.checkActiveSwitchLockedOn();
     }
 
     @Test
-    @Feature("Создание новости")
+    @Feature("Добавление новости")
     @DisplayName("Выбор категории подставляет её в пустой заголовок")
     @Description("Если заголовок пустой, после выбора категории в него подставляется название категории")
     public void selectCategoryFillsEmptyTitle() {
-        newsSteps.openCreateNewsForm();
+        newsSteps.openNewsForm();
         newsSteps.selectCategory(TestData.CATEGORY);
         newsSteps.checkTitle(TestData.CATEGORY);
     }
 
     @Test
-    @Feature("Создание новости")
+    @Feature("Добавление новости")
     @DisplayName("Сохранение новости с незаполненным описанием")
     @Description("Без описания новость не сохраняется, показывается сообщение Заполните пустые поля")
     public void saveNewsWithEmptyDescription() {
-        String title = TestData.randomNewsTitle();
+        String title = TestData.uniqueNewsTitle();
         createdTitles.add(title);
-        newsSteps.openCreateNewsForm();
+        newsSteps.openNewsForm();
         newsSteps.fillAllFieldsExceptDescription(title);
         newsSteps.clickSaveAndCheckEmptyFieldsToast();
         newsSteps.checkFormDisplayed();
     }
 
     @Test
-    @Feature("Создание новости")
+    @Feature("Добавление новости")
     @DisplayName("Отмена создания новости с подтверждением")
     @Description("После отмены создания и подтверждения в диалоге новость не появляется в списке")
     public void cancelCreationDoesNotSaveNews() {
-        String title = TestData.randomNewsTitle();
+        String title = TestData.uniqueNewsTitle();
         createdTitles.add(title);
-        newsSteps.openCreateNewsForm();
-        newsSteps.fillTitle(title);
+        newsSteps.openNewsForm();
+        newsSteps.enterTitle(title);
         newsSteps.clickCancel();
         newsSteps.confirmCancel();
-        newsSteps.checkNewsNotInList(title);
+        newsSteps.checkNewsMissing(title);
     }
 
     @Test
-    @Feature("Создание новости")
+    @Feature("Добавление новости")
     @DisplayName("Отказ от отмены создания сохраняет введённые данные")
     @Description("Если в диалоге отмены нажать Отмена, форма остаётся открытой и заголовок не стирается")
     public void dismissCancelDialogKeepsEnteredData() {
-        String title = TestData.randomNewsTitle();
+        String title = TestData.uniqueNewsTitle();
         createdTitles.add(title);
-        newsSteps.openCreateNewsForm();
-        newsSteps.fillTitle(title);
+        newsSteps.openNewsForm();
+        newsSteps.enterTitle(title);
         newsSteps.clickCancel();
         newsSteps.dismissCancel();
         newsSteps.checkTitle(title);
     }
 
     @Test
-    @Feature("Удаление новости")
-    @DisplayName("Удаление новости с подтверждением")
+    @Feature("Удаление")
+    @DisplayName("Удаление новости")
     @Description("После подтверждения удаления новость пропадает из панели управления")
     public void deleteNewsRemovesItFromList() {
-        String title = TestData.randomNewsTitle();
+        String title = TestData.uniqueNewsTitle();
         createdTitles.add(title);
-        newsSteps.createNews(title);
-        newsSteps.deleteNewsWithTitle(title, true);
-        newsSteps.checkNewsNotInList(title);
+        newsSteps.addNews(title);
+        newsSteps.deleteNews(title);
+        newsSteps.checkNewsMissing(title);
     }
 
     @Test
-    @Feature("Удаление новости")
-    @DisplayName("Отмена удаления новости")
+    @Feature("Удаление")
+    @DisplayName("Отказ от удаления")
     @Description("Если в диалоге удаления нажать Отмена, новость остаётся в списке")
     public void cancelDeletionKeepsNewsInList() {
-        String title = TestData.randomNewsTitle();
+        String title = TestData.uniqueNewsTitle();
         createdTitles.add(title);
-        newsSteps.createNews(title);
-        newsSteps.deleteNewsWithTitle(title, false);
-        newsSteps.checkNewsInList(title);
+        newsSteps.addNews(title);
+        newsSteps.cancelNewsDeletion(title);
+        newsSteps.checkNewsPresent(title);
     }
 
     @Test
-    @Feature("Редактирование новости")
-    @DisplayName("Редактирование заголовка новости")
+    @Feature("Изменение новости")
+    @DisplayName("Изменение заголовка")
     @Description("После изменения заголовка в списке виден новый заголовок, старого нет")
     public void editNewsTitle() {
-        String title = TestData.randomNewsTitle();
-        String editedTitle = TestData.randomNewsTitle();
+        String title = TestData.uniqueNewsTitle();
+        String editedTitle = TestData.uniqueNewsTitle();
         createdTitles.add(title);
         createdTitles.add(editedTitle);
-        newsSteps.createNews(title);
+        newsSteps.addNews(title);
         newsSteps.openEditForm(title);
-        newsSteps.fillTitle(editedTitle);
+        newsSteps.enterTitle(editedTitle);
         newsSteps.saveNews();
-        newsSteps.checkNewsInList(editedTitle);
-        newsSteps.checkNewsNotInList(title);
+        newsSteps.checkNewsPresent(editedTitle);
+        newsSteps.checkNewsMissing(title);
     }
 
     @Test
-    @Feature("Редактирование новости")
+    @Feature("Изменение новости")
     @DisplayName("Снятие публикации новости через редактирование")
     @Description("После выключения переключателя Активна у новости статус Не активна")
     public void editNewsSwitchOffActive() {
-        String title = TestData.randomNewsTitle();
+        String title = TestData.uniqueNewsTitle();
         createdTitles.add(title);
-        newsSteps.createNews(title);
+        newsSteps.addNews(title);
         newsSteps.openEditForm(title);
         newsSteps.switchOffActive();
         newsSteps.saveNews();
@@ -168,11 +168,11 @@ public class NewsTest extends BaseUiTest {
     }
 
     @Test
-    @Feature("Даты публикации")
+    @Feature("Дата публикации")
     @DisplayName("Дату публикации нельзя выбрать в прошлом")
     @Description("В календаре даты публикации минимальная дата равна сегодняшней")
     public void publishDateCannotBeBeforeToday() {
-        newsSteps.openCreateNewsForm();
+        newsSteps.openNewsForm();
         newsSteps.checkPublishDateMinIsToday();
         newsSteps.pickTodayAndCheckPublishDate();
     }

@@ -1,6 +1,6 @@
 package ru.edu.qamid.ui.steps;
 
-import static ru.edu.qamid.ui.utils.AllureSteps.step;
+import static ru.edu.qamid.ui.utils.AllureUtils.step;
 
 import java.util.Calendar;
 
@@ -20,40 +20,40 @@ public class NewsSteps {
     private final CreateEditNewsPage createEditNewsPage = new CreateEditNewsPage();
     private final FilterPage filterPage = new FilterPage();
 
-    public void openNewsList() {
+    public void goToNewsList() {
         step("Открыть раздел Новости через главное меню", () -> {
             appBar.openMainMenu();
-            appBar.clickMenuItem(R.string.news);
+            appBar.selectMenuItem(R.string.news);
             newsListPage.checkScreenDisplayed();
         });
     }
 
-    public void openNewsControlPanel() {
-        openNewsList();
+    public void goToControlPanel() {
+        goToNewsList();
         step("Нажать кнопку редактирования новостей", () -> {
-            newsListPage.clickEditNewsButton();
+            newsListPage.clickControlPanelButton();
             controlPanelPage.checkScreenDisplayed();
         });
     }
 
-    public void openCreateNewsForm() {
-        step("Нажать кнопку добавления новости", () -> {
-            controlPanelPage.clickAddNews();
+    public void openNewsForm() {
+        step("Нажать плюс в панели управления", () -> {
+            controlPanelPage.clickPlusButton();
             createEditNewsPage.checkScreenDisplayed();
         });
     }
 
-    public void createNews(String title) {
-        openCreateNewsForm();
+    public void addNews(String title) {
+        openNewsForm();
         step("Заполнить все поля формы", () -> {
-            createEditNewsPage.fillCategory(TestData.CATEGORY);
-            createEditNewsPage.fillTitle(title);
-            createEditNewsPage.pickTodayAsPublishDate();
-            createEditNewsPage.pickPublishTime(23, 59);
-            createEditNewsPage.fillDescription(TestData.DESCRIPTION);
+            createEditNewsPage.enterCategory(TestData.CATEGORY);
+            createEditNewsPage.enterTitle(title);
+            createEditNewsPage.setTodayPublishDate();
+            createEditNewsPage.setPublishTime(23, 59);
+            createEditNewsPage.enterDescription(TestData.DESCRIPTION);
         });
         saveNews();
-        checkNewsInList(title);
+        checkNewsPresent(title);
     }
 
     public void saveNews() {
@@ -63,14 +63,14 @@ public class NewsSteps {
         });
     }
 
-    public void checkNewsInList(String title) {
+    public void checkNewsPresent(String title) {
         step("Новость есть в списке панели управления", () ->
-                controlPanelPage.checkNewsWithTitleDisplayed(title));
+                controlPanelPage.checkNewsShown(title));
     }
 
-    public void checkNewsNotInList(String title) {
+    public void checkNewsMissing(String title) {
         step("Новости нет в списке панели управления", () ->
-                controlPanelPage.checkNewsWithTitleNotExist(title));
+                controlPanelPage.checkNewsAbsent(title));
     }
 
     public void checkNewsIsActive(String title) {
@@ -97,8 +97,8 @@ public class NewsSteps {
                 createEditNewsPage.selectCategoryFromDropdown(category));
     }
 
-    public void fillTitle(String title) {
-        step("Заполнить заголовок", () -> createEditNewsPage.fillTitle(title));
+    public void enterTitle(String title) {
+        step("Заполнить заголовок", () -> createEditNewsPage.enterTitle(title));
     }
 
     public void checkTitle(String title) {
@@ -107,10 +107,10 @@ public class NewsSteps {
 
     public void fillAllFieldsExceptDescription(String title) {
         step("Заполнить все поля, кроме Описания", () -> {
-            createEditNewsPage.fillCategory(TestData.CATEGORY);
-            createEditNewsPage.fillTitle(title);
-            createEditNewsPage.pickTodayAsPublishDate();
-            createEditNewsPage.pickPublishTime(23, 59);
+            createEditNewsPage.enterCategory(TestData.CATEGORY);
+            createEditNewsPage.enterTitle(title);
+            createEditNewsPage.setTodayPublishDate();
+            createEditNewsPage.setPublishTime(23, 59);
         });
     }
 
@@ -144,21 +144,26 @@ public class NewsSteps {
         });
     }
 
-    public void deleteNewsWithTitle(String title, boolean confirm) {
-        step("Нажать иконку удаления у новости '" + title + "'", () -> {
-            controlPanelPage.clickDeleteForTitle(title);
+    public void deleteNews(String title) {
+        openDeleteDialog(title);
+        step("Нажать ОК в диалоге удаления", controlPanelPage::confirmDialog);
+    }
+
+    public void cancelNewsDeletion(String title) {
+        openDeleteDialog(title);
+        step("Нажать Отмена в диалоге удаления", controlPanelPage::cancelDialog);
+    }
+
+    private void openDeleteDialog(String title) {
+        step("Нажать корзину у новости '" + title + "'", () -> {
+            controlPanelPage.clickDeleteIcon(title);
             controlPanelPage.checkDeleteDialogDisplayed();
         });
-        if (confirm) {
-            step("Подтвердить удаление", controlPanelPage::confirmDialog);
-        } else {
-            step("Отменить удаление", controlPanelPage::cancelDialog);
-        }
     }
 
     public void openEditForm(String title) {
         step("Открыть редактирование новости", () -> {
-            controlPanelPage.clickEditForTitle(title);
+            controlPanelPage.clickEditIcon(title);
             createEditNewsPage.checkScreenDisplayed();
             createEditNewsPage.checkFormTitle(R.string.editing);
             createEditNewsPage.checkTitle(title);
@@ -188,18 +193,18 @@ public class NewsSteps {
         });
     }
 
-    public void openFilterFromNewsList() {
-        openNewsList();
-        step("Нажать кнопку фильтра", () -> {
-            newsListPage.clickFilterButton();
+    public void goToFilterFromNewsList() {
+        goToNewsList();
+        step("Открыть фильтр", () -> {
+            newsListPage.clickFilterIcon();
             filterPage.checkScreenDisplayed();
         });
     }
 
-    public void openFilterFromControlPanel() {
-        openNewsControlPanel();
+    public void goToFilterFromControlPanel() {
+        goToControlPanel();
         step("Нажать кнопку фильтра в панели управления", () -> {
-            controlPanelPage.clickFilterButton();
+            controlPanelPage.clickFilterIcon();
             filterPage.checkScreenDisplayed();
         });
     }

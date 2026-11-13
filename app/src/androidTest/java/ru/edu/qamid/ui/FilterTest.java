@@ -21,7 +21,7 @@ import ru.edu.qamid.ui.steps.FilterSteps;
 import ru.edu.qamid.ui.steps.NewsSteps;
 
 @RunWith(AndroidJUnit4.class)
-@Epic("Фильтр")
+@Epic("Фильтр новостей")
 public class FilterTest extends BaseUiTest {
 
     private final AuthSteps authSteps = new AuthSteps();
@@ -32,8 +32,8 @@ public class FilterTest extends BaseUiTest {
     private final List<String> createdTitles = new ArrayList<>();
 
     @Before
-    public void signIn() {
-        authSteps.ensureLoggedIn(TestData.VALID_LOGIN, TestData.VALID_PASSWORD);
+    public void logIn() {
+        authSteps.makeSureLoggedIn(TestData.VALID_LOGIN, TestData.VALID_PASSWORD);
     }
 
     @After
@@ -42,22 +42,22 @@ public class FilterTest extends BaseUiTest {
     }
 
     @Test
-    @Feature("Фильтрация по периоду")
+    @Feature("Период")
     @DisplayName("Фильтр с указанной только начальной датой")
     @Description("Если указана только начальная дата, фильтр не применяется и показывается диалог Неверно указан период")
     public void filterWithOnlyStartDate() {
-        newsSteps.openFilterFromNewsList();
+        newsSteps.goToFilterFromNewsList();
         filterSteps.pickOnlyStartDate();
         filterSteps.applyAndCheckWrongPeriodDialog();
         filterSteps.closeWrongPeriodDialog();
     }
 
     @Test
-    @Feature("Фильтрация по периоду")
+    @Feature("Период")
     @DisplayName("Фильтр с указанной только конечной датой")
     @Description("Если указана только конечная дата, фильтр не применяется и показывается диалог Неверно указан период")
     public void filterWithOnlyEndDate() {
-        newsSteps.openFilterFromNewsList();
+        newsSteps.goToFilterFromNewsList();
         filterSteps.pickOnlyEndDate();
         filterSteps.applyAndCheckWrongPeriodDialog();
         filterSteps.closeWrongPeriodDialog();
@@ -68,7 +68,7 @@ public class FilterTest extends BaseUiTest {
     @DisplayName("Фильтр из списка новостей не содержит чекбоксов статуса")
     @Description("В фильтре, открытом из списка новостей, нет чекбоксов Активна и Не активна")
     public void filterFromNewsListHidesStatusCheckBoxes() {
-        newsSteps.openFilterFromNewsList();
+        newsSteps.goToFilterFromNewsList();
         filterSteps.checkStatusCheckBoxesHidden();
     }
 
@@ -77,7 +77,7 @@ public class FilterTest extends BaseUiTest {
     @DisplayName("Фильтр из панели управления содержит отмеченные чекбоксы статуса")
     @Description("В фильтре, открытом из панели управления, чекбоксы Активна и Не активна видны и отмечены")
     public void filterFromControlPanelShowsStatusCheckBoxes() {
-        newsSteps.openFilterFromControlPanel();
+        newsSteps.goToFilterFromControlPanel();
         filterSteps.checkStatusCheckBoxesShownAndChecked();
     }
 
@@ -86,22 +86,22 @@ public class FilterTest extends BaseUiTest {
     @DisplayName("Фильтр по статусу в панели управления")
     @Description("Созданная активная новость пропадает из списка при фильтре Не активна и показывается при фильтре Активна")
     public void filterByStatusInControlPanel() {
-        String title = TestData.randomNewsTitle();
+        String title = TestData.uniqueNewsTitle();
         createdTitles.add(title);
-        newsSteps.openNewsControlPanel();
-        newsSteps.createNews(title);
+        newsSteps.goToControlPanel();
+        newsSteps.addNews(title);
         filterSteps.filterOnlyNotActiveInControlPanel();
-        newsSteps.checkNewsNotInList(title);
+        newsSteps.checkNewsMissing(title);
         filterSteps.filterOnlyActiveInControlPanel();
-        newsSteps.checkNewsInList(title);
+        newsSteps.checkNewsPresent(title);
     }
 
     @Test
-    @Feature("Фильтрация по периоду")
+    @Feature("Период")
     @DisplayName("Кнопка Отмена закрывает фильтр без применения")
     @Description("Кнопка Отмена возвращает к списку новостей")
     public void cancelFilterReturnsToNewsList() {
-        newsSteps.openFilterFromNewsList();
+        newsSteps.goToFilterFromNewsList();
         filterSteps.cancelFilter();
     }
 }

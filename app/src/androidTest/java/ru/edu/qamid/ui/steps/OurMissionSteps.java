@@ -1,6 +1,6 @@
 package ru.edu.qamid.ui.steps;
 
-import static ru.edu.qamid.ui.utils.AllureSteps.step;
+import static ru.edu.qamid.ui.utils.AllureUtils.step;
 
 import ru.edu.qamid.ui.pages.OurMissionPage;
 

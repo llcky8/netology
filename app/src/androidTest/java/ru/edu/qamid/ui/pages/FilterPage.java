@@ -50,7 +50,7 @@ public class FilterPage {
         onView(withId(android.R.id.button1)).perform(click());
     }
 
-    public void clickApplyFilter() {
+    public void clickFilterApply() {
         onView(withId(R.id.filter_news_apply_button)).perform(click());
     }
 
@@ -66,11 +66,11 @@ public class FilterPage {
         onView(withId(R.id.filter_news_inactive_check_box)).perform(click());
     }
 
-    public void checkWrongPeriodDialogDisplayed() {
+    public void checkWrongPeriodMessage() {
         onView(withText(R.string.wrong_news_date_period)).check(matches(isDisplayed()));
     }
 
-    public void confirmWrongPeriodDialog() {
+    public void closeWrongPeriodMessage() {
         onView(withId(android.R.id.button1)).perform(click());
     }
 

@@ -21,7 +21,7 @@ public class AppBarPage {
         onView(withText(R.string.main)).check(matches(isDisplayed()));
     }
 
-    public void clickMenuItem(@StringRes int itemTextRes) {
+    public void selectMenuItem(@StringRes int itemTextRes) {
         onView(withText(itemTextRes)).perform(click());
     }
 
@@ -37,12 +37,12 @@ public class AppBarPage {
         onView(withId(R.id.our_mission_image_button)).perform(click());
     }
 
-    public void openPersonalCabinet() {
+    public void openProfileMenu() {
         onView(withId(R.id.authorization_image_button)).perform(click());
         onView(withText(R.string.log_out)).check(matches(isDisplayed()));
     }
 
-    public void clickLogOut() {
+    public void clickExit() {
         onView(withText(R.string.log_out)).perform(click());
     }
 }

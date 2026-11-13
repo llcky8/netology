@@ -1,6 +1,6 @@
 package ru.edu.qamid.ui.steps;
 
-import static ru.edu.qamid.ui.utils.AllureSteps.step;
+import static ru.edu.qamid.ui.utils.AllureUtils.step;
 
 import java.util.Calendar;
 
@@ -24,14 +24,14 @@ public class FilterSteps {
 
     public void applyAndCheckWrongPeriodDialog() {
         step("Нажать Фильтровать, диалог о неверном периоде", () -> {
-            filterPage.clickApplyFilter();
-            filterPage.checkWrongPeriodDialogDisplayed();
+            filterPage.clickFilterApply();
+            filterPage.checkWrongPeriodMessage();
         });
     }
 
     public void closeWrongPeriodDialog() {
         step("Закрыть диалог, экран фильтра остаётся открытым", () -> {
-            filterPage.confirmWrongPeriodDialog();
+            filterPage.closeWrongPeriodMessage();
             filterPage.checkScreenDisplayed();
         });
     }
@@ -54,20 +54,20 @@ public class FilterSteps {
 
     public void filterOnlyNotActiveInControlPanel() {
         step("В панели управления оставить в фильтре только Не активна", () -> {
-            controlPanelPage.clickFilterButton();
+            controlPanelPage.clickFilterIcon();
             filterPage.checkScreenDisplayed();
             filterPage.clickActiveCheckBox();
-            filterPage.clickApplyFilter();
+            filterPage.clickFilterApply();
             controlPanelPage.checkScreenDisplayed();
         });
     }
 
     public void filterOnlyActiveInControlPanel() {
         step("В панели управления оставить в фильтре только Активна", () -> {
-            controlPanelPage.clickFilterButton();
+            controlPanelPage.clickFilterIcon();
             filterPage.checkScreenDisplayed();
             filterPage.clickInactiveCheckBox();
-            filterPage.clickApplyFilter();
+            filterPage.clickFilterApply();
             controlPanelPage.checkScreenDisplayed();
         });
     }

@@ -10,15 +10,15 @@ public class TestData {
     public static final String CATEGORY = "Объявление";
     public static final String DESCRIPTION = "Создано автотестом";
 
-    public static String randomLogin() {
+    public static String fakeLogin() {
         return "user_" + random(8);
     }
 
-    public static String randomPassword() {
+    public static String fakePassword() {
         return random(12);
     }
 
-    public static String randomNewsTitle() {
+    public static String uniqueNewsTitle() {
         return "Автотест " + random(10);
     }
 

@@ -16,7 +16,7 @@ import ru.edu.qamid.ui.steps.NavigationSteps;
 import ru.edu.qamid.ui.steps.NewsSteps;
 
 @RunWith(AndroidJUnit4.class)
-@Epic("Навигация")
+@Epic("Переходы между экранами")
 public class NavigationTest extends BaseUiTest {
 
     private final AuthSteps authSteps = new AuthSteps();
@@ -24,12 +24,12 @@ public class NavigationTest extends BaseUiTest {
     private final NewsSteps newsSteps = new NewsSteps();
 
     @Before
-    public void signIn() {
-        authSteps.ensureLoggedIn(TestData.VALID_LOGIN, TestData.VALID_PASSWORD);
+    public void logIn() {
+        authSteps.makeSureLoggedIn(TestData.VALID_LOGIN, TestData.VALID_PASSWORD);
     }
 
     @Test
-    @Feature("Меню приложения")
+    @Feature("Главное меню")
     @DisplayName("Пункт меню текущего экрана недоступен")
     @Description("В главном меню нельзя выбрать пункт экрана, на котором сейчас находимся")
     public void currentScreenMenuItemIsDisabled() {
@@ -57,11 +57,11 @@ public class NavigationTest extends BaseUiTest {
     }
 
     @Test
-    @Feature("Выход из системы")
+    @Feature("Логаут")
     @DisplayName("Выход из системы с экрана Новостей")
     @Description("Выход из системы работает с экрана новостей")
     public void logOutFromNewsList() {
-        newsSteps.openNewsList();
+        newsSteps.goToNewsList();
         authSteps.logOut();
     }
 }

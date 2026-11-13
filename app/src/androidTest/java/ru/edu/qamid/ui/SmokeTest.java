@@ -18,7 +18,7 @@ public class SmokeTest extends BaseUiTest {
     private final AuthSteps authSteps = new AuthSteps();
 
     @Test
-    @Feature("Запуск приложения")
+    @Feature("Старт приложения")
     @DisplayName("После splash открывается экран входа или главный экран")
     @Description("После запуска приложение уходит с экрана загрузки на экран входа или на главный экран")
     public void appLeavesSplashScreen() {

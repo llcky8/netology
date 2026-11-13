@@ -3,7 +3,7 @@ package ru.edu.qamid.ui.steps;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static ru.edu.qamid.ui.utils.AllureSteps.step;
+import static ru.edu.qamid.ui.utils.AllureUtils.step;
 
 import android.os.SystemClock;
 
@@ -37,26 +37,26 @@ public class AuthSteps {
         step("Splash-экран сменяется рабочим экраном приложения", this::isLoggedInAfterSplash);
     }
 
-    public void signIn(String login, String password) {
+    public void logIn(String login, String password) {
         step("Войти под " + login, () -> {
-            authPage.setLogin(login);
-            authPage.setPassword(password);
-            authPage.clickEnter();
+            authPage.typeLogin(login);
+            authPage.typePassword(password);
+            authPage.clickSignInButton();
             mainPage.checkScreenDisplayed();
         });
     }
 
-    public void ensureLoggedIn(String login, String password) {
+    public void makeSureLoggedIn(String login, String password) {
         if (!isLoggedInAfterSplash()) {
-            signIn(login, password);
+            logIn(login, password);
         }
     }
 
-    public void ensureLoggedOut() {
+    public void makeSureLoggedOut() {
         if (isLoggedInAfterSplash()) {
             step("Выйти из сохранённой сессии", () -> {
-                appBar.openPersonalCabinet();
-                appBar.clickLogOut();
+                appBar.openProfileMenu();
+                appBar.clickExit();
             });
         }
         authPage.checkScreenDisplayed();
@@ -64,47 +64,47 @@ public class AuthSteps {
 
     public void fillLogin(String login) {
         step("Заполнить поле Логин", () -> {
-            authPage.setLogin(login);
-            authPage.checkLoginFieldContains(login);
+            authPage.typeLogin(login);
+            authPage.checkLoginText(login);
         });
     }
 
     public void fillPassword(String password) {
         step("Заполнить поле Пароль", () -> {
-            authPage.setPassword(password);
-            authPage.checkPasswordFieldContains(password);
+            authPage.typePassword(password);
+            authPage.checkPasswordText(password);
         });
     }
 
     public void clickEnterAndCheckMainScreen() {
         step("Нажать Войти, открывается главный экран", () -> {
-            authPage.clickEnter();
+            authPage.clickSignInButton();
             mainPage.checkScreenDisplayed();
         });
     }
 
     public void clickEnterAndCheckEmptyFieldsToast() {
         step("Нажать Войти, тост о пустых полях", () ->
-                authPage.clickEnterAndExpectToast(R.string.empty_login_or_password));
+                authPage.clickSignInAndWaitToast(R.string.empty_login_or_password));
     }
 
     public void clickEnterAndCheckWrongCredentialsToast() {
         step("Нажать Войти, тост о неверном логине или пароле", () ->
-                authPage.clickEnterAndExpectToast(R.string.wrong_login_or_password));
+                authPage.clickSignInAndWaitToast(R.string.wrong_login_or_password));
     }
 
     public void checkAuthScreenDisplayed() {
         step("Экран авторизации остаётся открытым", authPage::checkScreenDisplayed);
     }
 
-    public void checkEnterButtonReady() {
-        step("Кнопка Войти снова доступна, индикатор загрузки скрыт", authPage::checkEnterButtonReady);
+    public void checkSignInButtonActive() {
+        step("Кнопка Войти снова доступна, индикатор загрузки скрыт", authPage::checkSignInButtonActive);
     }
 
     public void logOut() {
-        step("Открыть меню личного кабинета", appBar::openPersonalCabinet);
+        step("Открыть меню личного кабинета", appBar::openProfileMenu);
         step("Нажать Выйти, открыт экран авторизации", () -> {
-            appBar.clickLogOut();
+            appBar.clickExit();
             authPage.checkScreenDisplayed();
         });
     }

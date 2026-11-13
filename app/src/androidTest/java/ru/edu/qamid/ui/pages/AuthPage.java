@@ -27,31 +27,31 @@ public class AuthPage {
         onView(withId(R.id.password_edit_text)).check(matches(isDisplayed()));
     }
 
-    public void setLogin(String login) {
+    public void typeLogin(String login) {
         onView(withId(R.id.login_edit_text)).perform(replaceText(login), closeSoftKeyboard());
     }
 
-    public void checkLoginFieldContains(String login) {
+    public void checkLoginText(String login) {
         onView(withId(R.id.login_edit_text)).check(matches(withText(login)));
     }
 
-    public void setPassword(String password) {
+    public void typePassword(String password) {
         onView(withId(R.id.password_edit_text)).perform(replaceText(password), closeSoftKeyboard());
     }
 
-    public void checkPasswordFieldContains(String password) {
+    public void checkPasswordText(String password) {
         onView(withId(R.id.password_edit_text)).check(matches(withText(password)));
     }
 
-    public void clickEnter() {
+    public void clickSignInButton() {
         onView(withId(R.id.enter_button)).perform(click());
     }
 
-    public void clickEnterAndExpectToast(@StringRes int toastTextRes) {
-        ToastChecker.performAndExpectToast(this::clickEnter, toastTextRes);
+    public void clickSignInAndWaitToast(@StringRes int toastTextRes) {
+        ToastChecker.performAndExpectToast(this::clickSignInButton, toastTextRes);
     }
 
-    public void checkEnterButtonReady() {
+    public void checkSignInButtonActive() {
         WaitUtils.waitFor(
                 withId(R.id.enter_button),
                 matches(allOf(isDisplayed(), isEnabled(), withText(R.string.sign_in)))

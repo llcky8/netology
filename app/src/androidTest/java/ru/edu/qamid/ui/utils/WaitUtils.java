@@ -5,6 +5,7 @@ import static androidx.test.espresso.Espresso.onView;
 import android.os.SystemClock;
 import android.view.View;
 
+import androidx.test.espresso.AmbiguousViewMatcherException;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.ViewAssertion;
 
@@ -18,7 +19,7 @@ public class WaitUtils {
             try {
                 onView(view).check(assertion);
                 return;
-            } catch (NoMatchingViewException | AssertionError e) {
+            } catch (NoMatchingViewException | AmbiguousViewMatcherException | AssertionError e) {
                 if (SystemClock.uptimeMillis() > deadline) throw e;
             }
             SystemClock.sleep(250);
@@ -29,7 +30,7 @@ public class WaitUtils {
         try {
             onView(view).check(assertion);
             return true;
-        } catch (NoMatchingViewException | AssertionError e) {
+        } catch (NoMatchingViewException | AmbiguousViewMatcherException | AssertionError e) {
             return false;
         }
     }
