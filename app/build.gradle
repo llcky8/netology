@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace 'ru.edu.qamid'
+    namespace = 'ru.edu.qamid'
     compileSdk = 36
 
     defaultConfig {
@@ -22,7 +22,7 @@ android {
     }
 
     compileOptions {
-        coreLibraryDesugaringEnabled true
+        coreLibraryDesugaringEnabled = true
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
@@ -32,8 +32,8 @@ android {
     }
 
     buildFeatures {
-        viewBinding true
-        buildConfig true
+        viewBinding = true
+        buildConfig = true
     }
 
     buildTypes {
